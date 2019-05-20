@@ -1,4 +1,4 @@
-From eea556d397d64d81d48199685662061beb1f1af6 Mon Sep 17 00:00:00 2001
+From 505ac97aa700e87dac1a93cd7b94e10c653b9cd5 Mon Sep 17 00:00:00 2001
 From: Matthias Schmitz <matthias@opendevices.io>
 Date: Tue, 16 Apr 2019 20:20:10 +0000
 Subject: [PATCH] ARM:dts: Add dts for INCOstartec pLILLY-A20
@@ -6,8 +6,8 @@ Subject: [PATCH] ARM:dts: Add dts for INCOstartec pLILLY-A20
 Signed-off-by: Matthias Schmitz <matthias@opendevices.io>
 ---
  arch/arm/boot/dts/Makefile             |   1 +
- arch/arm/boot/dts/sun7i-a20-plilly.dts | 384 +++++++++++++++++++++++++++++++++
- 2 files changed, 385 insertions(+)
+ arch/arm/boot/dts/sun7i-a20-plilly.dts | 400 +++++++++++++++++++++++++++++++++
+ 2 files changed, 401 insertions(+)
  create mode 100644 arch/arm/boot/dts/sun7i-a20-plilly.dts
 
 diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
@@ -24,10 +24,10 @@ index f4f5aea..b0995d2 100644
  dtb-$(CONFIG_MACH_SUN8I) += \
 diff --git a/arch/arm/boot/dts/sun7i-a20-plilly.dts b/arch/arm/boot/dts/sun7i-a20-plilly.dts
 new file mode 100644
-index 0000000..805aca7
+index 0000000..c0c682c
 --- /dev/null
 +++ b/arch/arm/boot/dts/sun7i-a20-plilly.dts
-@@ -0,0 +1,384 @@
+@@ -0,0 +1,400 @@
 +/*
 + * Copyright 2014 Hans de Goede <hdegoede@redhat.com>
 + *
@@ -174,6 +174,15 @@ index 0000000..805aca7
 +		interrupt-parent = <&nmi_intc>;
 +		interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
 +	};
++};
++
++&i2c1 {
++       status = "okay";
++
++       rtc_i2c: pcf85263@51 {
++               compatible = "nxp,pcf85263";
++               reg = <0x51>;
++       };
 +};
 +
 +&i2c2 {
@@ -412,6 +421,13 @@ index 0000000..805aca7
 +        allwinner,filter-type = <3>;
 +        status = "okay";
 +};
++
++&can0 {
++        pinctrl-names = "default";
++        pinctrl-0 = <&can_ph_pins>;
++        status = "okay";
++};
++
 -- 
 2.7.4
 

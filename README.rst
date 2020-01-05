@@ -19,17 +19,17 @@ layer in a directory::
   cd ~/yocto-build
   git clone https://github.com/opendevices/meta-incostartec
   cd meta-incostartec
-  git checkout warrior
+  git checkout zeus
 
   cd ~/yocto-build
   git clone https://github.com/linux-sunxi/meta-sunxi
   cd meta-sunxi
-  git checkout warrior
+  git checkout zeus
 
   cd ~/yocto-build
   git clone https://git.yoctoproject.org/git/poky
   cd poky 
-  git checkout warrior
+  git checkout zeus
 
 
 Setup the build directory::

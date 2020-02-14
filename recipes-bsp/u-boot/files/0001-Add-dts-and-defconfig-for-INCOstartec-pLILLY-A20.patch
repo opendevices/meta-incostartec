@@ -1,7 +1,7 @@
-From 4b8eaf2a8828f383075b0ed9a37cc934983cbdc2 Mon Sep 17 00:00:00 2001
+From b3cf44827fa5bf947f389afe2ff5c11c6e16a9e6 Mon Sep 17 00:00:00 2001
 From: Matthias Schmitz <matthias@opendevices.io>
 Date: Wed, 24 Apr 2019 00:04:54 +0200
-Subject: [PATCH] Add dts and defconfig for INCOstartec pLILLY-A20
+Subject: [PATCH 1/2] Add dts and defconfig for INCOstartec pLILLY-A20
 
 ---
  arch/arm/dts/sun7i-a20-plilly.dts | 393 ++++++++++++++++++++++++++++++
@@ -12,7 +12,7 @@ Subject: [PATCH] Add dts and defconfig for INCOstartec pLILLY-A20
 
 diff --git a/arch/arm/dts/sun7i-a20-plilly.dts b/arch/arm/dts/sun7i-a20-plilly.dts
 new file mode 100644
-index 0000000000..bdd87401c1
+index 0000000000..e5fbf85ecc
 --- /dev/null
 +++ b/arch/arm/dts/sun7i-a20-plilly.dts
 @@ -0,0 +1,393 @@
@@ -302,7 +302,7 @@ index 0000000000..bdd87401c1
 +                function = "gpio_in";
 +                bias-pull-up;
 +        };
-+	
++
 +	gmac_power_pin_bananapi: gmac_power_pin@0 {
 +		pins = "PH23";
 +		function = "gpio_out";
@@ -411,7 +411,7 @@ index 0000000000..bdd87401c1
 +};
 diff --git a/configs/plilly-a20_defconfig b/configs/plilly-a20_defconfig
 new file mode 100644
-index 0000000000..bcb4340cb9
+index 0000000000..88847a3344
 --- /dev/null
 +++ b/configs/plilly-a20_defconfig
 @@ -0,0 +1,33 @@

@@ -1,0 +1,48 @@
+From 36a79e3dfec0a69ae5532854e3564f7f0626c479 Mon Sep 17 00:00:00 2001
+From: Matthias Schmitz <matthias@opendevices.io>
+Date: Sat, 15 Feb 2020 00:06:53 +0100
+Subject: [PATCH 2/2] Add defconfig for INCOstartec tbt-x-056t with pLILLY-A20
+
+---
+ configs/plilly-a20-btb_defconfig | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+ create mode 100644 configs/plilly-a20-btb_defconfig
+
+diff --git a/configs/plilly-a20-btb_defconfig b/configs/plilly-a20-tbt_defconfig
+new file mode 100644
+index 0000000000..79d8093c8d
+--- /dev/null
++++ b/configs/plilly-a20-tbt_defconfig
+@@ -0,0 +1,29 @@
++CONFIG_ARM=y
++CONFIG_ARCH_SUNXI=y
++CONFIG_SPL=y
++CONFIG_MACH_SUN7I=y
++CONFIG_DRAM_CLK=432
++CONFIG_MMC_SUNXI_SLOT_EXTRA=2
++CONFIG_VIDEO_LCD_MODE="x:640,y:480,depth:18,pclk_khz:25000,le:40,ri:120,up:20,lo:10,hs:1,vs:1,sync:3,vmode:0"
++CONFIG_VIDEO_LCD_POWER="PH8"
++CONFIG_VIDEO_LCD_BL_EN="PH7"
++CONFIG_VIDEO_LCD_BL_PWM="PB2"
++CONFIG_GMAC_TX_DELAY=3
++CONFIG_AHCI=y
++CONFIG_NR_DRAM_BANKS=1
++# CONFIG_SYS_MALLOC_CLEAR_ON_INIT is not set
++CONFIG_SPL_I2C_SUPPORT=y
++# CONFIG_CMD_FLASH is not set
++# CONFIG_SPL_DOS_PARTITION is not set
++# CONFIG_SPL_EFI_PARTITION is not set
++CONFIG_DEFAULT_DEVICE_TREE="sun7i-a20-plilly"
++CONFIG_ENV_FAT_DEVICE_AND_PART="0:auto"
++CONFIG_NETCONSOLE=y
++CONFIG_SCSI_AHCI=y
++CONFIG_ETH_DESIGNWARE=y
++CONFIG_RGMII=y
++CONFIG_MII=y
++CONFIG_SUN7I_GMAC=y
++CONFIG_SCSI=y
++CONFIG_USB_EHCI_HCD=y
++CONFIG_SYS_USB_EVENT_POLL_VIA_INT_QUEUE=y
+-- 
+2.20.1
+

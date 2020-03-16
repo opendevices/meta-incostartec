@@ -6,7 +6,7 @@ Subject: [PATCH 2/2] Add defconfig for INCOstartec tbt-x-056t with pLILLY-A20
 ---
  configs/plilly-a20-btb_defconfig | 29 +++++++++++++++++++++++++++++
  1 file changed, 29 insertions(+)
- create mode 100644 configs/plilly-a20-btb_defconfig
+ create mode 100644 configs/plilly-a20-tbt_defconfig
 
 diff --git a/configs/plilly-a20-btb_defconfig b/configs/plilly-a20-tbt_defconfig
 new file mode 100644

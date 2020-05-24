@@ -1,21 +1,34 @@
-From b3cf44827fa5bf947f389afe2ff5c11c6e16a9e6 Mon Sep 17 00:00:00 2001
+From 63451b7205f65a635f56ff6916f1d635b15e4b02 Mon Sep 17 00:00:00 2001
 From: Matthias Schmitz <matthias@opendevices.io>
 Date: Wed, 24 Apr 2019 00:04:54 +0200
-Subject: [PATCH 1/2] Add dts and defconfig for INCOstartec pLILLY-A20
+Subject: [PATCH] Add dts and defconfig for INCOstartec pLILLY-A20
 
 ---
- arch/arm/dts/sun7i-a20-plilly.dts | 393 ++++++++++++++++++++++++++++++
+ arch/arm/dts/Makefile             |   1 +
+ arch/arm/dts/sun7i-a20-plilly.dts | 366 ++++++++++++++++++++++++++++++
  configs/plilly-a20_defconfig      |  33 +++
- 2 files changed, 426 insertions(+)
+ 3 files changed, 400 insertions(+)
  create mode 100644 arch/arm/dts/sun7i-a20-plilly.dts
  create mode 100644 configs/plilly-a20_defconfig
 
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 0127a91a82..26515443c0 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -480,6 +480,7 @@ dtb-$(CONFIG_MACH_SUN7I) += \
+ 	sun7i-a20-orangepi-mini.dtb \
+ 	sun7i-a20-pcduino3.dtb \
+ 	sun7i-a20-pcduino3-nano.dtb \
++        sun7i-a20-plilly.dtb \
+ 	sun7i-a20-primo73.dtb \
+ 	sun7i-a20-wexler-tab7200.dtb \
+ 	sun7i-a20-wits-pro-a20-dkt.dtb \
 diff --git a/arch/arm/dts/sun7i-a20-plilly.dts b/arch/arm/dts/sun7i-a20-plilly.dts
 new file mode 100644
-index 0000000000..e5fbf85ecc
+index 0000000000..fbe5c773a0
 --- /dev/null
 +++ b/arch/arm/dts/sun7i-a20-plilly.dts
-@@ -0,0 +1,393 @@
+@@ -0,0 +1,366 @@
 +/*
 + * Copyright 2014 Hans de Goede <hdegoede@redhat.com>
 + *
@@ -83,8 +96,6 @@ index 0000000000..e5fbf85ecc
 +
 +	leds {
 +		compatible = "gpio-leds";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&led_pins_bananapi>;
 +
 +		green {
 +			label = "bananapi:green:usr";
@@ -94,8 +105,6 @@ index 0000000000..e5fbf85ecc
 +
 +	reg_gmac_3v3: gmac-3v3 {
 +		compatible = "regulator-fixed";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&gmac_power_pin_bananapi>;
 +		regulator-name = "gmac-3v3";
 +		regulator-min-microvolt = <3300000>;
 +		regulator-max-microvolt = <3300000>;
@@ -143,7 +152,7 @@ index 0000000000..e5fbf85ecc
 +
 +&gmac {
 +	pinctrl-names = "default";
-+	pinctrl-0 = <&gmac_pins_rgmii_a>;
++	pinctrl-0 = <&gmac_rgmii_pins>;
 +	phy = <&phy1>;
 +	phy-mode = "rgmii";
 +	phy-supply = <&reg_gmac_3v3>;
@@ -155,8 +164,6 @@ index 0000000000..e5fbf85ecc
 +};
 +
 +&i2c0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&i2c0_pins_a>;
 +	status = "okay";
 +
 +	axp209: pmic@34 {
@@ -167,30 +174,25 @@ index 0000000000..e5fbf85ecc
 +};
 +
 +&i2c2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&i2c2_pins_a>;
 +	status = "okay";
 +};
 +
 +&ir0 {
 +	pinctrl-names = "default";
-+	pinctrl-0 = <&ir0_rx_pins_a>;
++	pinctrl-0 = <&ir0_rx_pin>;
 +	status = "okay";
 +};
 +
 +&mmc0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mmc0_pins_a>, <&mmc0_cd_pin_bananapi>;
 +	vmmc-supply = <&reg_vcc3v3>;
 +	bus-width = <4>;
-+	cd-gpios = <&pio 7 10 GPIO_ACTIVE_HIGH>; /* PH10 */
-+	cd-inverted;
++	cd-gpios = <&pio 7 10 GPIO_ACTIVE_LOW>; /* PH10 */
 +	status = "okay";
 +};
 +
 +&mmc2 {
 +	pinctrl-names = "default";
-+	pinctrl-0 = <&mmc2_pins_a>;
++	pinctrl-0 = <&mmc2_pins>;
 +	vmmc-supply = <&reg_vcc3v3>;
 +	bus-width = <4>;
 +	non-removable;
@@ -206,13 +208,15 @@ index 0000000000..e5fbf85ecc
 +
 +&mmc3 {
 +        pinctrl-names = "default";
-+        pinctrl-0 = <&mmc3_pins_b>, <&mmc3_cd_pin_bananapi>;
++        pinctrl-0 = <&mmc3_pins>, <&mmc3_cd_pin_plilly>;
 +        vmmc-supply = <&reg_vcc3v3>;
 +        bus-with = <4>;
 +        cd-gpios = <&pio 7 3 GPIO_ACTIVE_HIGH>; /* PH3 */
 +        cd-inverted;
 +        status = "okay";
 +};
++
++
 +
 +&ohci0 {
 +	status = "okay";
@@ -227,6 +231,11 @@ index 0000000000..e5fbf85ecc
 +};
 +
 +&pio {
++	vcc-pa-supply = <&reg_vcc3v3>;
++	vcc-pc-supply = <&reg_vcc3v3>;
++	vcc-pe-supply = <&reg_vcc3v3>;
++	vcc-pf-supply = <&reg_vcc3v3>;
++	vcc-pg-supply = <&reg_vcc3v3>;
 +	gpio-line-names =
 +		/* PA */
 +		"ERXD3", "ERXD2", "ERXD1", "ERXD0", "ETXD3",
@@ -278,40 +287,17 @@ index 0000000000..e5fbf85ecc
 +		"IO-6", "IO-3", "IO-2", "IO-0", "", "", "", "",
 +		"", "", "", "", "", "", "", "";
 +
-+	usb0_id_detect_pin: usb0_id_detect_pin@0 {
++	usb0_id_detect_pin: usb0-id-detect-pin {
 +		pins = "PH4";
 +		function = "gpio_in";
 +		bias-pull-up;
 +	};
 +
-+	mmc0_cd_pin_bananapi: mmc0_cd_pin@0 {
-+		pins = "PH10";
-+		function = "gpio_in";
-+		bias-pull-up;
-+	};
-+
-+	mmc3_pins_b: mmc3@0 {
-+                pins = "PI4", "PI5", "PI6",
-+                                        "PI7", "PI8", "PI9";
-+                function = "mmc3";
-+                bias-pull-up;
-+        };
-+
-+        mmc3_cd_pin_bananapi: mmc3_pins@0 {
++        mmc3_cd_pin_plilly: mmc3_pins@0 {
 +                pins = "PH3";
 +                function = "gpio_in";
 +                bias-pull-up;
 +        };
-+
-+	gmac_power_pin_bananapi: gmac_power_pin@0 {
-+		pins = "PH23";
-+		function = "gpio_out";
-+	};
-+
-+	led_pins_bananapi: led_pins@0 {
-+		pins = "PH24";
-+		function = "gpio_out";
-+	};
 +};
 +
 +#include "axp209.dtsi"
@@ -355,33 +341,33 @@ index 0000000000..e5fbf85ecc
 +
 +&spi0 {
 +	pinctrl-names = "default";
-+	pinctrl-0 = <&spi0_pins_a>,
-+		    <&spi0_cs0_pins_a>,
-+		    <&spi0_cs1_pins_a>;
++	pinctrl-0 = <&spi0_pi_pins>,
++		    <&spi0_cs0_pi_pin>,
++		    <&spi0_cs1_pi_pin>;
 +	status = "okay";
 +};
 +
 +&uart0 {
 +	pinctrl-names = "default";
-+	pinctrl-0 = <&uart0_pins_a>;
++	pinctrl-0 = <&uart0_pb_pins>;
 +	status = "okay";
 +};
 +
 +&uart2 {
 +	pinctrl-names = "default";
-+	pinctrl-0 = <&uart2_pins_a>;
++	pinctrl-0 = <&uart2_pi_pins>;
 +	status = "okay";
 +};
 +
 +&uart3 {
 +	pinctrl-names = "default";
-+	pinctrl-0 = <&uart3_pins_b>;
++	pinctrl-0 = <&uart3_ph_pins>;
 +	status = "okay";
 +};
 +
 +&uart7 {
 +	pinctrl-names = "default";
-+	pinctrl-0 = <&uart7_pins_a>;
++	pinctrl-0 = <&uart7_pi_pins>;
 +	status = "okay";
 +};
 +
